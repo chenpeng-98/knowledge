@@ -4,7 +4,7 @@
     lessc main.less main.css  
     lessc --clean-css main.less main.css
 ###参考链接：
-[less小总结：]('http://www.bootcss.com/p/lesscss/')
+[less小总结：](http://www.bootcss.com/p/lesscss/)
 ###注释：
 /**/  编译时保留   
 //  编译时不保留   
