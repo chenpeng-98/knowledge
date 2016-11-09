@@ -2,7 +2,9 @@
     npm install less -g   
     lessc main.less  
     lessc main.less main.css  
-    lessc --clean-css main.less main.css
+    lessc --clean-css main.less main.css   
+    *less-plugin-functions的使用*
+    lessc --functions main.less main.css
 ###参考链接：
 [less小总结：](http://www.bootcss.com/p/lesscss/)
 ###注释：

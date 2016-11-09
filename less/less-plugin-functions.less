@@ -1,0 +1,19 @@
+@color: red;
+
+.function {
+  .rem(@size, @base: 50px) {
+    return: @size / @base *1rem;
+  }
+}
+
+p {
+  color: @color;
+  width: rem(100px);
+  padding: rem(20px) rem(50px) rem(15px);
+}
+
+/*用法：
+*npm install less -g
+*npm install less-plugin-functions
+*运行输出.css文件：lessc --functions main.less main.css
+*/
