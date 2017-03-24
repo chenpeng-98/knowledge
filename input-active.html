@@ -1,0 +1,36 @@
+<meta charset="utf-8">
+<style>
+  input {
+    width:55px;
+    padding: 0 5px;
+    border: 2px solid green;
+    outline: none;
+  }
+</style>
+
+<input id="ipt" type="password" maxlength="40" autocomplete ="off"/>
+
+<script>
+  const ipt = document.getElementById('ipt');
+  let i = 0;
+  const showLen = 10;
+  const stepIndent = -4;
+  ipt.addEventListener('keyup', (e) => {
+    const keyCode = e.keyCode;
+    console.log(ipt.value);
+    if (keyCode > 36 && keyCode < 41) {  // 方向键
+      return;
+    }
+    const len = ipt.value.length;
+    if (keyCode == 8 || keyCode == 46) {  // backSpace  delete键
+      i = len <= showLen ? 0 : (len-showLen);
+    }
+    if (len < showLen) {
+      return;
+    }
+    ipt.style.textIndent = `${stepIndent}px`;
+    setTimeout(() => {
+      ipt.style.textIndent = 0;
+    }, 26)
+  });
+</script>
