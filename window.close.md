@@ -1,5 +1,9 @@
-## 关闭气泡：
-window.location.href = 'about:blank';  即新打开一个空白页
+## 关闭气泡：打开空白页
+```
+window.location.href = 'about:blank';
+window.open('about:blank', '_self');
+<a href="about:blank" target="_self">空白窗口</a>
+```
 
 ## return false
 在页面A中用window.open()打开页面B，页面B上有一个Button按钮，Button按钮的OnClientClick="javascript:window.close();"，重复通过点击页面A中的window.open()链接打开页面B，并点击页面B上的关闭按钮关闭页面B，两三次以后，页面B就无法打开了，而且页面A也无法通过刷新来加载，可是如果把页面B上的Button按钮的OnClientClick改为"javascript:window.close();return false;"  
