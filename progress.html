@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title></title>
+  <style type="text/css">
+  	body {
+  	  margin: 0;
+  	  padding: 0;
+  	}
+   .circleProgress_wrapper{  
+	  width: 200px;  
+	  height: 200px;  
+	  margin: 50px auto;  
+	  position: relative;  
+	  border:1px solid #ddd; 
+	} 
+  	.wrapper{  
+	  width: 100px;  
+	  height: 200px;  
+	  position: absolute;  
+	  top:0;  
+	  overflow: hidden;  
+	}  
+	.right {  
+	  right:0;  
+	}  
+	.left{  
+	  left:0; /* 此处故意右移1px，为了兼容移动版（中心线出有空隙） */  
+	} 
+
+	.circleProgress{  
+	  width: 160px;  
+	  height: 160px;  
+	  border:20px solid transparent;  
+	  border-radius: 50%;  
+	  position: absolute;  
+	  top:0;
+	  transform: rotate(-135deg);
+	}  
+
+	.rightcircle{  
+	  border-top:20px solid green;  
+	  border-right:20px solid green;  
+	  right:0;  
+	  /*-webkit-animation: circleProgressLoad_right 15s linear infinite;  */
+	}  
+	.leftcircle{  
+	  border-bottom:20px solid green;  
+	  border-left:20px solid green;  
+	  left:0;  
+	  /*-webkit-animation: circleProgressLoad_left 15s linear infinite;  */
+	} 
+
+	.content {
+	  position: absolute; 
+	  left: 57px; 
+	  top: 86px;
+	}
+
+	  
+	/*@-webkit-keyframes circleProgressLoad_right{  
+	  0%{  
+	   -webkit-transform: rotate(-135deg);  
+	  }  
+	  50%,100%{  
+	   -webkit-transform: rotate(45deg);  
+	  } 
+	}  
+	@-webkit-keyframes circleProgressLoad_left{  
+	  0%,50%{  
+	   -webkit-transform: rotate(-135deg);  
+	  }
+	  100%{  
+	   -webkit-transform: rotate(45deg);  
+	  }  
+	} */ 
+  </style>
+</head>
+<body>
+  <div class="circleProgress_wrapper">  
+   <div class="wrapper right">  
+    <div class="circleProgress rightcircle" id="gtCircle"></div>  
+   </div>  
+   <div class="wrapper left">  
+    <div class="circleProgress leftcircle" id="ltCircle"></div>  
+   </div>
+	 <div class="content">
+		 JS进度条
+	 </div>
+	</div> 
+
+  <script>
+    const gtCircle = document.getElementById('gtCircle');
+    const ltCircle = document.getElementById('ltCircle');
+
+		const o = {
+			deg: 0,
+			ltDeg: 0,
+			gtDeg: 0,
+			ltTimer: null,
+			gtTimer: null,
+			nowDeg: 0,
+			prog(d) {
+				this.deg = d;
+				this.ltDeg = d - 180 > 0 ? d -180 : 0;  // 左半圆旋转角度
+				this.gtDeg = d - 180 > 0 ? 180 : d;  // 右半圆旋转角度
+				this.progressGt();
+			},
+    	progressGt() {
+				gtTimer = setTimeout(() => {
+					this.nowDeg++;
+					if(this.nowDeg > this.deg || this.nowDeg > 180) {
+						clearTimeout(gtTimer);
+						this.ltDeg && this.progressLt();
+						return;
+					}
+					gtCircle.style.transform = 'rotate(' + (this.nowDeg-135) + 'deg)';
+					this.progressGt();
+				}, 16)
+			},
+			progressLt() {
+				ltTimer = setTimeout(() => {
+					this.nowDeg ++;
+					console.log(this.nowDeg);
+					if(this.nowDeg > this.deg || this.nowDeg > 360) {
+						clearTimeout(ltTimer);
+						this.nowDeg = 0;
+						return;
+					}
+					ltCircle.style.transform = 'rotate(' + (this.nowDeg - 180 - 135) + 'deg)';
+					this.progressLt();
+				}, 16);
+      }
+		}
+		o.prog(380);
+  </script>
+</body>
+</html>
