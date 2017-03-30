@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>cookie</title>
+    <style>
+        strong {
+          color: red;
+        }
+        pre {
+          white-space: pre-wrap;
+        }
+    </style>
+</head>
+<body>
+  <h3>构造通用的cookie处理函数</h3>
+  <pre>
+    1．添加一个cookie：addCookie(name,value,expiresHours) 
+    参数：cookie名称，cookie值，以及在多少小时后过期。这里约定expiresHours为0时不设定过期时间，即当浏览器关闭时cookie自动消失。该函数实现如下：
+    function addCookie(name,value,expiresHours) { 
+      var cookieString = name+" = "+escape(value); 
+      //判断是否设置过期时间 
+      if(expiresHours>0) { 
+        var date = new Date(); 
+        date.setTime(date.getTime+expiresHours*3600*1000); 
+        cookieString = cookieString+"; expires = "+date.toGMTString(); 
+      } 
+      document.cookie = cookieString; 
+    } 
+
+    2．获取指定名称的cookie值：getCookie(name) 
+    该函数返回名称为name的cookie值，如果不存在则返回空，其实现如下： 
+    function getCookie(name) { 
+      var strCookie = document.cookie; 
+      var arrCookie = strCookie.split("; ");
+      for(var i =  0; i < arrCookie.length;i++) { 
+        var arr = arrCookie[i].split(" = "); 
+        if(arr[0] = name)
+          return arr[1]; 
+      } 
+      return ""; 
+    } 
+
+    3．删除指定名称的cookie：deleteCookie(name) 
+    该函数可以删除指定名称的cookie，其实现如下： 
+    function deleteCookie(name) { 
+      var date = new Date(); 
+      date.setTime(date.getTime()-10000); 
+      document.cookie = name+" = v; expires = "+date.toGMTString(); 
+    }
+    
+  </pre>
+
+  <h3>cookie概述</h3>
+  <pre>
+    JavaScript中的一个机制：cookie，则可以达到真正全局变量的要求。 
+
+    cookie是浏览器提供的一种机制，它将document 对象的cookie属性提供给JavaScript。可以由JavaScript对其进行控制，而并不是JavaScript本身的性质。cookie是存于用户硬盘的一个文件，这个文件通常对应于一个域名，当浏览器再次访问这个域名时，便使这个cookie可用。因此，<strong>cookie可以跨越一个域名下的多个网页，但不能跨越多个域名使用。</strong> 
+
+    不同的浏览器对cookie的实现也不一样，但其性质是相同的。例如在Windows 2000以及Windows xp中，cookie文件存储于documents and settings\userName\cookie\文件夹下。通常的命名格式为：userName@domain.txt。 
+
+    cookie机制将信息存储于用户硬盘，因此可以作为全局变量，这是它最大的一个优点。它可以用于以下几种场合。 
+
+    （1）保存用户登录状态。例如将用户id存储于一个cookie内，这样当用户下次访问该页面时就不需要重新登录了，现在很多论坛和社区都提供这样的功能。 cookie还可以设置过期时间，当超过时间期限后，cookie就会自动消失。因此，系统往往可以提示用户保持登录状态的时间：常见选项有一个月、三个 月、一年等。 
+
+    （2）跟踪用户行为。例如一个天气预报网站，能够根据用户选择的地区显示当地的天气情况。如果每次都需要选择所在地是烦琐的，当利用了 cookie后就会显得很人性化了，系统能够记住上一次访问的地区，当下次再打开该页面时，它就会自动显示上次用户所在地区的天气情况。因为一切都是在后 台完成，所以这样的页面就像为某个用户所定制的一样，使用起来非常方便。 
+
+    （3）定制页面。如果网站提供了换肤或更换布局的功能，那么可以使用cookie来记录用户的选项，例如：背景色、分辨率等。当用户下次访问时，仍然可以保存上一次访问的界面风格。 
+
+    （4）创建购物车。正如在前面的例子中使用cookie来记录用户需要购买的商品一样，在结账的时候可以统一提交。例如淘宝网就使用cookie记录了用户曾经浏览过的商品，方便随时进行比较。 
+
+    当然，上述应用仅仅是cookie能完成的部分应用，还有更多的功能需要全局变量。cookie的缺点主要集中于安全性和隐私保护。主要包括以下几种： 
+    <strong>
+    （1）cookie可能被禁用。当用户非常注重个人隐私保护时，他很可能禁用浏览器的cookie功能； 
+    （2）cookie是与浏览器相关的。这意味着即使访问的是同一个页面，不同浏览器之间所保存的cookie也是不能互相访问的； 
+    （3）cookie可能被删除。因为每个cookie都是硬盘上的一个文件，因此很有可能被用户删除； 
+    （4）cookie安全性不够高。所有的cookie都是以纯文本的形式记录于文件中，因此如果要保存用户名密码等信息时，最好事先经过加密处理。 
+    </strong>
+
+    <h5>设置cookie</h5> 
+    每个cookie都是一个名/值对，可以把下面这样一个字符串赋值给document.cookie： 
+
+    document.cookie="userId=828"; 
+    如果要一次存储多个名/值对，可以使用分号加空格（; ）隔开，例如： 
+
+    document.cookie="userId=828; userName=hulk"; 
+    在cookie 的名或值中不能使用分号（;）、逗号（,）、等号（=）以及空格。在cookie的名中做到这点很容易，但要保存的值是不确定的。如何来存储这些值呢？方 法是用<strong>escape()</strong>函数进行编码，它能将一些特殊符号使用十六进制表示，例如空格将会编码为“20%”，从而可以存储于cookie值中，而且使用此 种方案还可以避免中文乱码的出现。
+
+      document.cookie="str="+escape("I love ajax");  ==> document.cookie="str=I%20love%20ajax"; 
+
+    当使用escape()编码后，在取出值以后需要使用<strong>unescape()</strong>进行解码才能得到原来的cookie值。 
+
+    尽管document.cookie看上去就像一个属性，可以赋不同的值。但它和一般的属性不一样，改变它的赋值并不意味着丢失原来的值，例如连续执行下面两条语句： 
+    document.cookie="userId=828"; 
+    document.cookie="userName=hulk"; 
+
+    这时浏览器将维护两个cookie，分别是userId和userName，因此给document.cookie赋值更像执行类似这样的语句：
+    document.addCookie("userId=828"); 
+    document.addCookie("userName=hulk"); 
+
+    事实上，浏览器就是按照这样的方式来设置cookie的，如果要<strong>改变一个cookie的值，只需重新赋值</strong>
+    
+    document.cookie="userId=929"; 
+    这样就将名为userId的cookie值设置为了929。 
+
+    <h5>获取cookie的值</h5>
+    下面介绍如何获取cookie的值。cookie的值可以由document.cookie直接获得： 
+
+    var strCookie=document.cookie; 
+    这将获得以分号隔开的多个名/值对所组成的字符串，这些名/值对包括了该域名下的所有cookie。
+
+    从输出可知，只能够一次获取所有的cookie值，而不能指定cookie名称来获得指定的值，这正是处理cookie值最麻 烦的一部分。用户必须自己分析这个字符串.
+
+    <h5>给cookie设置终止日期</h5> 
+    到现在为止，所有的cookie都是单会话cookie，即浏览器关闭后这些cookie将会丢失，事实上这些cookie仅仅是存储在内存中，而没有建立相应的硬盘文件。 
+
+    在实际开发中，cookie常常需要长期保存，例如保存用户登录的状态。这可以用下面的选项来实现： 
+
+    document.cookie="userId=828; expiress=GMT_String"; 
+    其中GMT_String是以GMT格式表示的时间字符串，这条语句就是将userId这个cookie设置为GMT_String表示的过期时间，超过这个时间，cookie将消失，不可访问。
+    
+
+    <h5>删除cookie</h5> 
+    为了删除一个cookie，可以将其过期时间设定为一个过去的时间
+
+    <h5>指定可访问cookie的路径</h5> 
+    默认情况下，如果在某个页面创建了一个cookie，那么该页面所在目录中的其他页面也可以访问该cookie。如果这个目录下还有子目录，则在子目录中也可以访问。例如在www.xxxx.com/html/a.html中所创建的cookie，可以被www.xxxx.com/html/b.html或www.xxx.com/ html/ some/c.html所访问，但不能被www.xxxx.com/d.html访问。 
+
+    为了控制cookie可以访问的目录，需要使用path参数设置cookie，语法如下： 
+
+    document.cookie="name=value; path=cookieDir"; 
+    其中cookieDir表示可访问cookie的目录。例如： 
+
+    document.cookie="userId=320; path=/shop"; 
+    就表示当前cookie仅能在shop目录下使用。 
+
+    如果要使cookie在整个网站下可用，可以将cookie_dir指定为根目录，例如： 
+
+
+    document.cookie="userId=320; path=/"; 
+
+    指定可访问cookie的主机名 
+    和路径类似，主机名是指同一个域下的不同主机，例如：www.google.com和gmail.google.com就是两个不同的主机名。默认情况下，一个主机中创建的cookie在另一个主机下是不能被访问的，但可以通过domain参数来实现对其的控制，其语法格式为： 
+
+    document.cookie="name=value; domain=cookieDomain"; 
+    以google为例，要实现跨主机访问，可以写为： 
+
+    document.cookie="name=value;domain=.google.com"; 
+    这样，所有google.com下的主机都可以访问该cookie。 
+  </pre>
+</body>
+</html>
