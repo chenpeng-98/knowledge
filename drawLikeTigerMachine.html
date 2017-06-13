@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Document</title>
+  <style>
+    html, body {
+      padding: 0;
+      margin: 0;
+    }
+  .present-box {
+    width: 126px;
+    height: 126px;
+    border: 5px solid pink;
+  }
+  .present {
+    position: relative;
+    display: block;
+    width: 40px;
+    height: 40px;
+    margin: 1px;
+    float: left;
+    background-color: #391;
+  }
+  .shadow {
+    display: none;
+    position: absolute;
+    left: 0;
+    top: 0;
+    content: '';
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, .5);
+  }
+  .shadow4 {
+    display: block;
+    background-color: #fff;
+    font: 28px/40px 'microsoft yahei';
+    text-align: center;
+    color: red;
+  }
+  </style>
+</head>
+<body>
+  <div class="present-box">
+    <div class="present"><span class="shadow shadow0"></span></div>
+    <div class="present"><span class="shadow shadow1"></span></div>
+    <div class="present"><span class="shadow shadow2"></span></div>
+    <div class="present"><span class="shadow shadow3"></span></div>
+    <div class="present"><span class="shadow shadow4" id="getGift">抽</span></div>
+    <div class="present"><span class="shadow shadow5"></span></div>
+    <div class="present"><span class="shadow shadow6"></span></div>
+    <div class="present"><span class="shadow shadow7"></span></div>
+    <div class="present"><span class="shadow shadow8"></span></div>
+  </div>
+
+  <script>
+    var order = [0, 1, 2, 5, 8, 7, 6, 3];
+    var len = order.length;
+    var nowOrder = 0;
+    var presents = document.querySelectorAll('.shadow');
+    var timer = null;
+    var gift = 'shadow' + order[parseInt(Math.random() * (len - 1))];
+
+    var draw = document.getElementById('getGift');
+    draw.addEventListener('click', drawFn)
+
+    /**
+     * speed(number): 转动速度
+     * shouldStop(boolean): 是否发起‘停转’命令
+     * giftClass(string): 奖品所在位置的节点包含的className
+     * loop(number): 收到‘停转’命令后在转几圈后才停转
+     */
+    function anima(speed, shouldStop, giftClass, loop) {
+      var nowLoop = 0;
+      timer = setInterval(() => {
+        for (var i = 0; i <= len; i++) {
+          (i !== 4) && (presents[i].style.display = 'none');
+        }
+        var nowPresent = presents[order[nowOrder]]
+        nowPresent.style.display = 'block';
+        if (stop && nowPresent.classList.contains(giftClass)) {
+          if (!loop) {
+            clearInterval(timer);
+          } else if (nowLoop++ > loop ){
+            clearInterval(timer);
+          }
+        }
+        nowOrder ++;
+        if (nowOrder >= len) {
+          nowOrder = 0;
+        }
+      }, speed);
+    }
+
+    function drawFn() {
+      // 防止多次抽奖，点击后立即移除事件
+      draw.removeEventListener('click', drawFn);
+      // 立即开始转动
+      anima(80);
+      // 请求礼包数据后减缓转动速度，然后显示礼物
+      setTimeout(() => {
+        clearInterval(timer);
+        // 已拿到奖品，发起停转命令
+        anima(200, true, gift, 3);
+      }, 3000);
+    }
+  </script>
+</body>
+</html>
