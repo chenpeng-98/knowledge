@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="./clipboard.js"></script>
+</head>
+<body>
+  <!-- eg.1 -->
+  <input id="foo" value="github.com/zenorocha/clipboard.js.git">
+  <button id="btn" data-clipboard-target="#foo">Copy to clipboard</button>
+  <br/>
+  <br/>
+  <!-- eg.2 -->
+  <button id="btn2" data-clipboard-text="Just because you are so young!">
+    Copy to clipboard
+  </button>
+  <br/>
+  <br/>
+  <!-- eg.3 -->
+  <input type="text" id="name" placeholder="Fill in your name, please!"/>
+  <br/>
+  <input type="text" id="code" placeholder="Fill in your invite code, please!"/>
+  <br/>
+  <button id="btn3">Advanced usage</button>
+  <br/>
+  <br/>
+
+  <!-- eg.4  -->
+  <input type="text" placeholder="fill in name" id="copyT1">
+  <br/>
+  <input type="text" placeholder="fill in code" id="copyT2">
+  <br/>
+  <input type="text" placeholder="all info" id="copyT3" style="position: absolute; top: -2000px;">
+  <button type="button" id="btn4" onclick="copyFn()">无插件化复制</button>
+
+  <script>
+    new Clipboard('#btn2');
+    var clipboard = new Clipboard('#btn');
+
+    // Events
+    clipboard.on('success', function(e) {
+      console.info('Action:', e.action);
+      console.info('Text:', e.text);
+      console.info('Trigger:', e.trigger);
+      e.clearSelection();
+    });
+    clipboard.on('error', function(e) {
+      console.error('Action:', e.action);
+      console.error('Trigger:', e.trigger);
+    });
+    // Advanced usage
+    new Clipboard('#btn3', {
+      target: function(trigger) {
+        // return trigger.nextElementSibling;
+        return document.getElementById('name');
+      },
+      text: function(trigger) {
+        // return trigger.getAttribute('aria-label');
+        var name = document.getElementById('name').value;
+        var code = document.getElementById('code').value;
+        return name + ' is inviting you to join, download UC and input the code of ' + '"' + code + '" to help him. The download url is : http://ucweb.com/desktop';
+      }
+    });
+  </script>
+  <script> // 原生写法
+    function copyFn() {
+      // 获取要复制得节点
+      var name = document.getElementById('copyT1').value;
+      var code = document.getElementById('copyT2').value;
+      var copyTarget = document.getElementById('copyT3');
+      copyTarget.value = name + ' is invite you, hurry to download UC in "http://www.ucweb.com/desktop/". Please fill in the code "' + code +  '" which is only for him.'
+      copyTarget.select();
+      try {
+        document.execCommand('copy');
+        copyTarget.value = '';
+      } catch(err) {
+        // 手动复制：
+        copyTarget.style.cssText = 'position: relative; top: 0;';
+        alert('Please press Ctrl/Cmd+C to copy');
+        console.warn(err);
+      }
+    }
+  </script>
+</body>
+</html>
