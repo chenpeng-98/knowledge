@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+  <style>
+    body, input, label {
+      margin: 0;
+      padding: 0;
+    }
+    .check-box {
+      width: 230px;
+      height: 30px;
+      margin: 60px auto;
+      border: 1px solid green;
+    }
+    .checkbox-category {
+      display: none;
+    }
+    .checkbox-category + label {
+      display: inline-block;
+      margin: 0 3px;
+      float: left;
+      width: 70px;
+      font-size: 20px;
+      line-height: 30px;
+      text-align: center;
+      background-color: #ccc;
+    }
+    .checkbox-category:checked + label {
+      background-color: pink;
+    }
+  </style>
+</head>
+<body>
+  <div id="checkBox" class="check-box">
+    <input class="checkbox-category" id="local" checked type="checkbox" name="Category" value="local"> <label for="local">local</label>
+    <input class="checkbox-category" id="hot" type="checkbox" name="Category" value="hot"> <label for="hot">hot</label>
+    <input class="checkbox-category" id="picture" type="checkbox" name="Category" value="picture"> <label for="picture">picture</label>
+  </div>
+
+  <script>
+    var box = document.getElementById('checkBox');
+    box.onclick = function(e) {
+      // 获取所有选中的checkbox
+      var checkedEles = document.querySelectorAll('.checkbox-category:checked');
+      var targetEle = e.target;
+      // 若只有一个ckecked,则判断当前点击的是否是该checked
+      var isSameEle = checkedEles[0].id === targetEle.id || checkedEles[0].id === targetEle.textContent;
+      // 若想取消唯一一个checked，则阻止
+      if (checkedEles.length === 1 && isSameEle) {
+        e.preventDefault();
+        return;
+      }
+      // 判断当前点击事件是否为input标签冒泡上来的，不是则return 【冒泡机制会使label和input两次触发点击事件】
+      // 参考：http://www.cnblogs.com/feng524822/p/4084037.html
+      if (targetEle.tagName !== 'INPUT') {
+        return;
+      }
+      var checkedIds = [];
+      // 获取所有checked ID
+      for (var i = 0, len = checkedEles.length; i < len; i += 1) {
+        checkedIds.push(checkedEles[i].id)
+      }
+      console.log(checkedIds);
+    }
+  </script>
+</body>
+</html>
