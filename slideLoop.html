@@ -1,0 +1,114 @@
+<meta charset="utf-8">
+
+<style>
+  body, ul, li {
+    margin: 0;
+    padding: 0;
+  }
+  .box {
+    width: 200px;
+    height: 90px;
+    padding-bottom: 10px;
+    margin: 300px auto 0;
+    overflow: hidden;
+    border: 1px solid green;
+  }
+  .slide-contain {
+    position: relative;
+    list-style: none;
+  }
+  .slide-item {
+    position: absolute;
+    height: 20px;
+    line-height: 20px;
+  }
+  .slide-animate {
+    transition: top 3s linear;
+  }
+  .slide-item-0 {
+    top: 10px;
+  }
+  .slide-item-1 {
+    top: 40px;
+  }
+  .slide-item-2 {
+    top: 70px;
+  }
+  .slide-item-no {
+    top: 100px;
+  }
+</style>
+
+
+<div class="box">
+  <ul class="slide-contain" id="slideContain">
+  </ul>
+</div>
+
+
+<script>
+  var ul = document.getElementById('slideContain');
+  var data = [
+    111111111111,
+    222222222222,
+    333333333333,
+    444444444444,
+    555555555555
+  ];
+  var docfrag  = document.createDocumentFragment();
+  var len = data.length;
+  for (var i = 0; i < len; i += 1) {
+    var li = document.createElement("li");
+    li.textContent = data[i];
+    li.classList.add('slide-item');
+    li.classList.add('slide-animate');
+    if (i < 3) {
+      li.classList.add('slide-item-' + i);
+    } else {
+      li.classList.add('slide-item-no');
+    }
+    docfrag.appendChild(li);
+  }
+  ul.appendChild(docfrag);
+
+  var lis = document.getElementsByClassName('slide-item');
+  var LOOP_NUM = 4;
+  var startIndex = 0;
+  setInterval(() => {
+    // 下下个动画周期开启下个动画周期里关闭的动画。
+    var prePre = document.getElementsByClassName('slide-item-pre-pre')[0];
+    if(prePre) {
+      prePre.classList.add('slide-animate');
+      prePre.classList.remove('slide-item-pre-pre');
+    }
+    // 下个动画周期将移动到顶部不可见区域的元素放到最底部不可见区域
+    var pre = document.getElementsByClassName('slide-item-pre')[0];
+    if (pre) {
+      pre.classList.remove('slide-animate');
+      pre.style.top = '100px';
+      pre.classList.add('slide-item-pre-pre');
+      pre.classList.remove('slide-item-pre');
+    }
+    var arr = [];
+    if (len - startIndex < LOOP_NUM) {
+      for (var i = startIndex; i < len; i ++) {
+        arr.push(i);
+      }
+      for (var m = 0; m < LOOP_NUM - (len - startIndex); m += 1) {
+        arr.push(m);
+      }
+    } else {
+      for (var j = 0; j < LOOP_NUM; j ++) {
+        arr.push(startIndex + j);
+      }
+    }
+    lis[arr[0]].style.top = '-20px';
+    lis[arr[0]].classList.add('slide-item-pre');
+    lis[arr[1]].style.top = '10px';
+    lis[arr[2]].style.top = '40px';
+    lis[arr[3]].style.top = '70px';
+    if (++startIndex >= len) {
+      startIndex = 0;
+    }
+  }, 5000);
+</script>
