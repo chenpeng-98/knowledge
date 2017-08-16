@@ -90,18 +90,23 @@
       pre.classList.remove('slide-item-pre');
     }
     var arr = [];
-    if (len - startIndex < LOOP_NUM) {
-      for (var i = startIndex; i < len; i ++) {
-        arr.push(i);
-      }
-      for (var m = 0; m < LOOP_NUM - (len - startIndex); m += 1) {
-        arr.push(m);
-      }
-    } else {
-      for (var j = 0; j < LOOP_NUM; j ++) {
-        arr.push(startIndex + j);
-      }
+//     if (len - startIndex < LOOP_NUM) {
+//       for (var i = startIndex; i < len; i ++) {
+//         arr.push(i);
+//       }
+//       for (var m = 0; m < LOOP_NUM - (len - startIndex); m += 1) {
+//         arr.push(m);
+//       }
+//     } else {
+//       for (var j = 0; j < LOOP_NUM; j ++) {
+//         arr.push(startIndex + j);
+//       }
+//     }
+    
+    for (var i = 0; i < LOOP_NUM; i += 1) {
+      arr.push((startIndex + i) % len);
     }
+    
     lis[arr[0]].style.top = '-20px';
     lis[arr[0]].classList.add('slide-item-pre');
     lis[arr[1]].style.top = '10px';
