@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Document</title>
+  <style>
+    div {
+      border: 1px solid blue;
+    }
+    h2, p {
+      margin: 0;
+      padding: 0;
+    }
+    h2 {
+      display: inline-block;
+      margin-left: 50%;
+      transform: translateX(-50%);
+      max-width: 200px;
+      height: 16px;
+      font-weight: 300;
+      font-size: 16px;
+      line-height: 1;
+      font-family: 'microsoft yahei';
+      color: rgb(0, 255, 98);
+    }
+    p {
+      display: inline-block;
+      max-width: 186px;
+      height: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    i {
+      color: #000;
+      font-weight: 300;
+      font-style: normal;
+    }
+    span {
+      float: right;
+    }
+  </style>
+</head>
+<body>
+  <div>
+    <h2>
+      <p><i>abcdefghijk</i>lmnopqrstuvwxyz</p><span>:</span>
+    </h2>
+  </div>
+</body>
+</html>
