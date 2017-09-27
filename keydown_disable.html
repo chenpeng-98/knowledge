@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    // 应用场景：输入相应的密码后方可调用控制台
+    const secret = {
+      u: false,
+      c: false,
+      b: false,
+      r: false,
+      o: false,
+      w: false,
+      s: false,
+      e: false,
+      r: false
+    };
+    const keys = Object.keys(secret);
+    document.addEventListener('keydown', (e) => {
+      const pressKey = e.key.toLowerCase();
+      const allPressed = keys.every((key) => {
+        key === pressKey ? (secret[key] = true) : '';
+        return secret[key];
+      });
+      console.log(secret);
+      if (!allPressed) {
+        e.preventDefault();
+      }
+    });
+  </script>
+</body>
+</html>
