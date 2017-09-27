@@ -7,7 +7,7 @@
     div {
       border: 1px solid blue;
     }
-    h2, p {
+    h2, p, i {
       margin: 0;
       padding: 0;
     }
@@ -15,18 +15,19 @@
       display: inline-block;
       margin-left: 50%;
       transform: translateX(-50%);
-      max-width: 200px;
-      height: 16px;
+      height: 18px;
       font-weight: 300;
-      font-size: 16px;
+      font-size: 18px;
       line-height: 1;
       font-family: 'microsoft yahei';
-      color: rgb(0, 255, 98);
+      color: red;
+    }
+    h2:after {
+      content: ':';
     }
     p {
       display: inline-block;
-      max-width: 186px;
-      height: 100%;
+      max-width: 245px;
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
@@ -36,15 +37,12 @@
       font-weight: 300;
       font-style: normal;
     }
-    span {
-      float: right;
-    }
   </style>
 </head>
 <body>
   <div>
     <h2>
-      <p><i>abcdefghijk</i>lmnopqrstuvwxyz</p><span>:</span>
+      <p><i>亲爱的</i>lmnopqrstu即将到手vwxyz</p>
     </h2>
   </div>
 </body>
