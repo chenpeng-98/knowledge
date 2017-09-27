@@ -7,42 +7,47 @@
     div {
       border: 1px solid blue;
     }
-    h2, p, i {
+    h2, p {
       margin: 0;
       padding: 0;
     }
-    h2 {
+    /* 显示内容居中 */
+    .ellipsis-box {
       display: inline-block;
       margin-left: 50%;
       transform: translateX(-50%);
-      height: 18px;
-      font-weight: 300;
-      font-size: 18px;
-      line-height: 1;
-      font-family: 'microsoft yahei';
       color: red;
     }
-    h2:after {
+    .ellipsis-box:after {
+      position: absolute;
+      top: 0;
+      right: -3px;
       content: ':';
     }
-    p {
-      display: inline-block;
+    .ellipsie-show {
+      height: 18px;
+      font-weight: 400;
+      font-size: 18px;
+      line-height: 1.2;
+      font-family: 'microsoft yahei';
+    }
+    /* 核心文案，溢出... */
+    .ellipsis-text {
       max-width: 245px;
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
     }
-    i {
+    .ellipsis-text:before {
+      content: '亲爱的';
       color: #000;
-      font-weight: 300;
-      font-style: normal;
     }
   </style>
 </head>
 <body>
   <div>
-    <h2>
-      <p><i>亲爱的</i>lmnopqrstu即将到手vwxyz</p>
+    <h2 class="ellipsis-box ellipsie-show">
+      <p class="ellipsis-text">lmnopqrstu即将到手vwxyz</p>
     </h2>
   </div>
 </body>
